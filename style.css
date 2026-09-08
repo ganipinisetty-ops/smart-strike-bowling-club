@@ -1,0 +1,115 @@
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#07111e;
+  color:white;
+  font-family:Arial
+}
+.app{
+  max-width:520px;
+  margin:auto;
+  min-height:100vh;
+  padding:18px;
+  background:linear-gradient(#0b1a2b,#06101b)
+}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center
+}
+header img{
+  width:155px;
+  border-radius:12px
+}
+header b{
+  background:#12243a;
+  padding:10px 14px;
+  border-radius:20px
+}
+section{
+  text-align:center;
+  padding:25px 5px
+}
+.hide{display:none}
+h1{
+  font-size:38px;
+  margin-top:35px
+}
+button{
+  width:100%;
+  padding:16px;
+  margin:7px 0;
+  border:0;
+  border-radius:14px;
+  background:#194267;
+  color:white;
+  font-weight:bold;
+  font-size:16px
+}
+button:first-of-type{
+  background:#2678e8
+}
+.lane{
+  height:390px;
+  margin:20px 10px;
+  background:linear-gradient(90deg,#9b6a37,#edc47d,#9b6a37);
+  border:8px solid #704622;
+  border-radius:12px;
+  position:relative;
+  overflow:hidden
+}
+.lane:after{
+  content:"";
+  position:absolute;
+  left:20%;
+  right:20%;
+  top:0;
+  bottom:0;
+  border-left:2px solid #fff5;
+  border-right:2px solid #fff5
+}
+.lane #pins{
+  position:absolute;
+  top:30px;
+  left:0;
+  right:0;
+  font-size:30px;
+  line-height:45px;
+  z-index:2
+}
+.lane #ball{
+  position:absolute;
+  bottom:18px;
+  left:50%;
+  font-size:40px;
+  transform:translateX(-50%);
+  transition:1s
+}
+.roll{
+  bottom:340px!important
+}
+input{
+  width:90%
+}
+#q{
+  margin-top:15px;
+  text-align:left;
+  background:#10243a;
+  padding:16px;
+  border-radius:14px
+}
+.answer{
+  background:#183b59
+}
+.correct{
+  background:#17613e
+}
+.wrong{
+  background:#6b2730
+}
+.card{
+  padding:25px;
+  margin:10px 0;
+  background:#10243a;
+  border-radius:15px
+}
