@@ -151,4 +151,121 @@ function answer(i,c){
  },900);
 }
 
+show('home');  const ball = document.getElementById('ball');
+  const pins = document.getElementById('pins');
+
+  ball.classList.add('roll');
+
+  setTimeout(() => {
+    ball.classList.remove('roll');
+
+    pins.style.transform = 'scale(0.85) rotate(2deg)';
+
+    setTimeout(() => {
+      pins.style.transform = '';
+      question();
+    }, 250);
+
+  }, 900);
+}
+
+function question(){
+  const q = qs[frame - 1];
+
+  document.getElementById('q').innerHTML =
+    '<b>' + q[0] + ' 🧠</b>' +
+    '<p>' + q[1] + '</p>' +
+    q[2].map((a,i) =>
+      '<button class="answer" onclick="answer(' +
+      i + ',' + q[3] + ')">' + a + '</button>'
+    ).join('');
+}
+
+function answer(i,c){
+  const bs = document.querySelectorAll('.answer');
+
+  bs.forEach(b => b.disabled = true);
+
+  if(i === c){
+    bs[i].classList.add('correct');
+
+    shards++;
+    earned++;
+
+    localStorage.setItem('ss_shards', shards);
+    document.getElementById('shards').textContent = shards;
+  }else{
+    bs[i].classList.add('wrong');
+    bs[c].classList.add('correct');
+  }
+
+  setTimeout(() => {
+    frame++;
+
+    if(frame > 10){
+
+      document.getElementById('q').innerHTML =
+        '<h2>🏆 GAME COMPLETE!</h2>' +
+        '<p>You earned <b>' + earned + ' 🌱 Star Shards</b>.</p>' +
+        '<button onclick="start()">PLAY AGAIN 🎳</button>' +
+        '<button onclick="show(\'home\')">HOME 🏠</button>';
+
+    }else{
+
+      document.getElementById('frame').textContent = frame;
+      document.getElementById('q').innerHTML = '';
+      document.getElementById('bowl').disabled = false;
+
+    }
+
+  },900);
+}
+
+show('home'); 
+
+
+
+function question(){
+ let q=qs[frame-1];
+
+ document.getElementById('q').innerHTML=
+ '<b>'+q[0]+' 🧠</b><p>'+q[1]+'</p>'+
+ q[2].map((a,i)=>
+ '<button class="answer" onclick="answer('+i+','+q[3]+')">'+a+'</button>'
+ ).join('');
+}
+
+function answer(i,c){
+ let bs=document.querySelectorAll('.answer');
+
+ bs.forEach(b=>b.disabled=true);
+
+ if(i===c){
+  bs[i].classList.add('correct');
+  shards++;
+  earned++;
+  localStorage.setItem('ss_shards',shards);
+  document.getElementById('shards').textContent=shards;
+ }else{
+  bs[i].classList.add('wrong');
+  bs[c].classList.add('correct');
+ }
+
+ setTimeout(()=>{
+  frame++;
+
+  if(frame>10){
+   document.getElementById('q').innerHTML=
+   '<h2>🏆 GAME COMPLETE!</h2>'+
+   '<p>You earned <b>'+earned+' 🌱</b>.</p>'+
+   '<button onclick="start()">PLAY AGAIN</button>'+
+   '<button onclick="show(\'home\')">HOME</button>';
+  }else{
+   document.getElementById('frame').textContent=frame;
+   document.getElementById('q').innerHTML='';
+   document.getElementById('bowl').disabled=false;
+  }
+ },900);
+}
+
 show('home');
