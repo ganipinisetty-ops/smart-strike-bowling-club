@@ -104,9 +104,9 @@ function answer(i,c){
   },900);
 }
 
-show('home');  question();
- },900);
-}
+show('home'); 
+
+
 
 function question(){
  let q=qs[frame-1];
