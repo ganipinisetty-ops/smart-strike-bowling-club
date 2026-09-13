@@ -1149,3 +1149,175 @@ updateBalance();
 updateLaneItems();
 
 show('home');
+/* ================= 3D BOWLING LANE ================= */
+
+let threeScene;
+let threeCamera;
+let threeRenderer;
+let threeBall;
+let threePins = [];
+
+function create3DBowlingLane() {
+
+  if (typeof THREE === "undefined") return;
+
+  const lane = document.querySelector(".lane");
+  if (!lane) return;
+
+  const oldPins = document.getElementById("pins");
+  const oldBall = document.getElementById("ball");
+
+  if (oldPins) oldPins.style.display = "none";
+  if (oldBall) oldBall.style.display = "none";
+
+  threeScene = new THREE.Scene();
+  threeScene.background = new THREE.Color(0x06142f);
+
+  threeCamera = new THREE.PerspectiveCamera(
+    45,
+    lane.clientWidth / lane.clientHeight,
+    0.1,
+    100
+  );
+
+  threeCamera.position.set(0, 5, 11);
+  threeCamera.lookAt(0, 0, -4);
+
+  threeRenderer = new THREE.WebGLRenderer({
+    antialias: true
+  });
+
+  threeRenderer.setSize(
+    lane.clientWidth,
+    lane.clientHeight
+  );
+
+  threeRenderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 2)
+  );
+
+  lane.appendChild(threeRenderer.domElement);
+
+  /* LIGHT */
+
+  const light = new THREE.HemisphereLight(
+    0xffffff,
+    0x223355,
+    2
+  );
+
+  threeScene.add(light);
+
+  /* LANE */
+
+  const laneGeometry = new THREE.BoxGeometry(
+    5,
+    0.25,
+    18
+  );
+
+  const laneMaterial = new THREE.MeshStandardMaterial({
+    color: 0xb87942,
+    roughness: 0.65
+  });
+
+  const laneMesh = new THREE.Mesh(
+    laneGeometry,
+    laneMaterial
+  );
+
+  laneMesh.position.y = -0.15;
+  laneMesh.position.z = -1;
+
+  threeScene.add(laneMesh);
+
+  /* BALL */
+
+  const ballGeometry =
+    new THREE.SphereGeometry(0.55, 32, 32);
+
+  const ballMaterial =
+    new THREE.MeshStandardMaterial({
+      color: 0x111111,
+      metalness: 0.25,
+      roughness: 0.2
+    });
+
+  threeBall = new THREE.Mesh(
+    ballGeometry,
+    ballMaterial
+  );
+
+  threeBall.position.set(0, 0.55, 6);
+
+  threeScene.add(threeBall);
+
+  /* PINS */
+
+  const pinMaterial =
+    new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      roughness: 0.35
+    });
+
+  const pinPositions = [
+    [0, -6.5],
+    [-0.65, -7.1],
+    [0.65, -7.1],
+    [-1.3, -7.7],
+    [0, -7.7],
+    [1.3, -7.7],
+    [-1.95, -8.3],
+    [-0.65, -8.3],
+    [0.65, -8.3],
+    [1.95, -8.3]
+  ];
+
+  pinPositions.forEach(function(pos) {
+
+    const pinGeometry =
+      new THREE.CylinderGeometry(
+        0.22,
+        0.32,
+        1.15,
+        24
+      );
+
+    const pin = new THREE.Mesh(
+      pinGeometry,
+      pinMaterial
+    );
+
+    pin.position.set(
+      pos[0],
+      0.55,
+      pos[1]
+    );
+
+    threeScene.add(pin);
+    threePins.push(pin);
+  });
+
+  /* ANIMATION */
+
+  function animate3D() {
+
+    requestAnimationFrame(animate3D);
+
+    if (threeBall) {
+      threeBall.rotation.x += 0.03;
+    }
+
+    threeRenderer.render(
+      threeScene,
+      threeCamera
+    );
+  }
+
+  animate3D();
+}
+
+window.addEventListener(
+  "load",
+  create3DBowlingLane
+);
