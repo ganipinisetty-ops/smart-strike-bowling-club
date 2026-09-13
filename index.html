@@ -8,60 +8,127 @@
 </head>
 
 <body>
+
 <div class="app">
 
 <header>
-<img src="assets/logo.png">
+<img src="assets/logo.png" alt="Smart Strike Bowling Club">
 <b>🌱 <span id="shards">0</span></b>
 </header>
 
 <section id="home">
+
 <h1>SMART STRIKE</h1>
+
 <p>Play • Learn • Grow</p>
-<button onclick="start()">🎳 PLAY GAME</button>
-<button onclick="show('learn')">🧠 LEARN & EARN</button>
-<button onclick="show('balls')">🎳 MY BALLS</button>
-<button onclick="show('shop')">🛒 BALL SHOP</button>
+
+<button onclick="start()">
+🎳 PLAY GAME
+</button>
+
+<button onclick="show('learn')">
+🧠 LEARN & EARN
+</button>
+
+<button onclick="show('balls')">
+🎳 MY BALLS
+</button>
+
+<button onclick="show('shop')">
+🛒 BALL SHOP
+</button>
+
 </section>
+
 
 <section id="game" class="hide">
-<b>FRAME <span id="frame">1</span>/10</b>
+
+<b>
+FRAME <span id="frame">1</span>/10
+</b>
 
 <div class="lane">
-<div id="pins">● ● ● ● ●<br> ● ● ● ● ●</div>
-<div id="ball">🎳</div>
+
+<div id="pins">
+● ● ● ● ●<br>
+ ● ● ● ● ●
 </div>
 
-<input id="aim" type="range" min="-100" max="100" value="0">
+<div id="ball">
+<img src="basic_ball-1.png" alt="Bowling Ball">
+</div>
 
-<button id="bowl" onclick="bowl()">BOWL 🎳</button>
+</div>
+
+<input
+id="aim"
+type="range"
+min="-100"
+max="100"
+value="0"
+>
+
+<button id="bowl" onclick="bowl()">
+BOWL 🎳
+</button>
 
 <div id="q"></div>
+
 </section>
+
 
 <section id="learn" class="hide">
-<button onclick="show('home')">← HOME</button>
-<h2>LEARN & EARN</h2>
-<p>Maths ➗ • Science 🔬 • General Knowledge 🌍</p>
-<p>10 questions per game. Every correct answer earns 1 🌱.</p>
+
+<button onclick="show('home')">
+← HOME
+</button>
+
+<h2>🧠 LEARN & EARN</h2>
+
+<p>
+Maths ➗ • Science 🔬 • General Knowledge 🌍
+</p>
+
+<p>
+10 questions per game.
+</p>
+
+<p>
+Every correct answer earns
+<b>5 🌱 Star Shards</b>.
+</p>
+
 </section>
+
 
 <section id="balls" class="hide">
-<button onclick="show('home')">← HOME</button>
-<h2>MY BALLS 🎳</h2>
-<div class="card">🎳 Basic Ball<br>Unlocked</div>
-<div class="card">🔥 Fire Ball<br>100,000 🌱</div>
+
+<button onclick="show('home')">
+← HOME
+</button>
+
+<h2>🎳 MY BALLS</h2>
+
+<div id="myBalls"></div>
+
 </section>
 
+
 <section id="shop" class="hide">
-<button onclick="show('home')">← HOME</button>
-<h2>BALL SHOP 🛒</h2>
-<div class="card">🌱 Star Ball<br>100,000 🌱</div>
-<p>Real-money purchases are not enabled in this prototype.</p>
+
+<button onclick="show('home')">
+← HOME
+</button>
+
+<h2>🛒 BALL SHOP</h2>
+
+<div id="shopBalls"></div>
+
 </section>
 
 </div>
 
 <script src="game.js"></script>
+
 </body>
 </html>
