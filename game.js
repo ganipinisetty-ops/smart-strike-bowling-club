@@ -11,8 +11,21 @@ const balls = [
   { id:'golden', name:'Golden Ball', price:25000, file:'golden_ball.png', icon:'👑' }
 ];
 
-let owned = JSON.parse(localStorage.getItem('ss_owned_balls') || '["basic"]');
-let selectedBall = localStorage.getItem('ss_selected_ball') || 'basic';
+const premiumBalls = [
+  { id:'galaxy', name:'Galaxy Ball', price:199, icon:'🌌' },
+  { id:'dragon', name:'Dragon Ball', price:299, icon:'🐉' },
+  { id:'frost', name:'Frost Ball', price:399, icon:'❄️' },
+  { id:'cyberstorm', name:'Cyber Storm Ball', price:499, icon:'⚡' },
+  { id:'phoenix', name:'Phoenix Ball', price:699, icon:'🔥' },
+  { id:'blackhole', name:'Black Hole Ball', price:999, icon:'🕳️' }
+];
+
+let owned = JSON.parse(
+  localStorage.getItem('ss_owned_balls') || '["basic"]'
+);
+
+let selectedBall =
+  localStorage.getItem('ss_selected_ball') || 'basic';
 
 const qs = [
   ['Maths','7 + 5 = ?',['10','12','14'],1],
@@ -27,14 +40,31 @@ const qs = [
   ['Maths','100 - 37 = ?',['53','63','73'],1]
 ];
 
+function updateBalance() {
+  const el = document.getElementById('shards');
+  if (el) el.textContent = shards;
+}
+
 function show(id) {
-  document.querySelectorAll('section').forEach(s => s.classList.add('hide'));
-  document.getElementById(id).classList.remove('hide');
+  document.querySelectorAll('section').forEach(section => {
+    section.classList.add('hide');
+  });
 
-  document.getElementById('shards').textContent = shards;
+  const target = document.getElementById(id);
 
-  if (id === 'balls') renderMyBalls();
-  if (id === 'shop') renderShop();
+  if (target) {
+    target.classList.remove('hide');
+  }
+
+  updateBalance();
+
+  if (id === 'balls') {
+    renderMyBalls();
+  }
+
+  if (id === 'shop') {
+    renderShop();
+  }
 
   updateLaneBall();
 }
@@ -45,7 +75,7 @@ function start() {
 
   show('game');
 
-  document.getElementById('frame').textContent = 1;
+  document.getElementById('frame').textContent = '1';
   document.getElementById('q').innerHTML = '';
   document.getElementById('bowl').disabled = false;
 
@@ -54,17 +84,23 @@ function start() {
 
 function updateLaneBall() {
   const ball = document.getElementById('ball');
+
   if (!ball) return;
 
   const b = balls.find(x => x.id === selectedBall);
+
   if (!b) return;
 
   ball.innerHTML =
-    '<img src="' + b.file + '" alt="' + b.name + '">' ;
+    '<img src="' + b.file + '" alt="' + b.name + '">';
 }
 
 function bowl() {
-  document.getElementById('bowl').disabled = true;
+  const bowlButton = document.getElementById('bowl');
+
+  if (bowlButton.disabled) return;
+
+  bowlButton.disabled = true;
 
   const ball = document.getElementById('ball');
   const pins = document.getElementById('pins');
@@ -72,13 +108,18 @@ function bowl() {
   ball.classList.add('roll');
 
   setTimeout(() => {
+
     ball.classList.remove('roll');
 
-    pins.style.transform = 'scale(0.85) rotate(2deg)';
+    pins.style.transform =
+      'scale(0.85) rotate(2deg)';
 
     setTimeout(() => {
+
       pins.style.transform = '';
+
       question();
+
     }, 250);
 
   }, 900);
@@ -90,80 +131,132 @@ function question() {
   document.getElementById('q').innerHTML =
     '<b>' + q[0] + ' 🧠</b>' +
     '<p>' + q[1] + '</p>' +
-    q[2].map((a,i) =>
+
+    q[2].map((answerText, index) =>
       '<button class="answer" onclick="answer(' +
-      i + ',' + q[3] + ')">' + a + '</button>'
+      index + ',' + q[3] + ')">' +
+      answerText +
+      '</button>'
     ).join('');
 }
 
-function answer(i,c) {
-  const bs = document.querySelectorAll('.answer');
+function answer(index, correctIndex) {
 
-  bs.forEach(b => b.disabled = true);
+  const buttons =
+    document.querySelectorAll('.answer');
 
-  if (i === c) {
-    bs[i].classList.add('correct');
+  buttons.forEach(button => {
+    button.disabled = true;
+  });
+
+  if (index === correctIndex) {
+
+    buttons[index].classList.add('correct');
 
     shards += 5;
     earned += 5;
 
-    localStorage.setItem('ss_shards', shards);
-    document.getElementById('shards').textContent = shards;
+    localStorage.setItem(
+      'ss_shards',
+      shards
+    );
+
+    updateBalance();
 
   } else {
-    bs[i].classList.add('wrong');
-    bs[c].classList.add('correct');
+
+    buttons[index].classList.add('wrong');
+
+    buttons[correctIndex].classList.add('correct');
   }
 
   setTimeout(() => {
+
     frame++;
 
     if (frame > 10) {
 
       document.getElementById('q').innerHTML =
         '<h2>🏆 GAME COMPLETE!</h2>' +
-        '<p>You earned <b>' + earned + ' 🌱 Star Shards</b>.</p>' +
-        '<button onclick="start()">PLAY AGAIN 🎳</button>' +
-        '<button onclick="show(\'home\')">HOME 🏠</button>';
+        '<p>You earned <b>' +
+        earned +
+        ' 🌱 Star Shards</b>.</p>' +
+
+        '<button onclick="start()">' +
+        'PLAY AGAIN 🎳' +
+        '</button>' +
+
+        '<button onclick="show(\'home\')">' +
+        'HOME 🏠' +
+        '</button>';
 
     } else {
 
-      document.getElementById('frame').textContent = frame;
-      document.getElementById('q').innerHTML = '';
-      document.getElementById('bowl').disabled = false;
+      document.getElementById('frame').textContent =
+        frame;
 
+      document.getElementById('q').innerHTML = '';
+
+      document.getElementById('bowl').disabled = false;
     }
 
-  },900);
+  }, 900);
 }
 
 function buyBall(id) {
-  const b = balls.find(x => x.id === id);
 
-  if (!b || owned.includes(id)) return;
+  const ball = balls.find(
+    item => item.id === id
+  );
 
-  if (shards < b.price) {
-    alert('You need ' + b.price + ' 🌱 Star Shards.');
+  if (!ball) return;
+
+  if (owned.includes(id)) {
     return;
   }
 
-  shards -= b.price;
+  if (shards < ball.price) {
+
+    alert(
+      'You need ' +
+      ball.price.toLocaleString() +
+      ' 🌱 Star Shards.'
+    );
+
+    return;
+  }
+
+  shards -= ball.price;
+
   owned.push(id);
 
-  localStorage.setItem('ss_shards', shards);
-  localStorage.setItem('ss_owned_balls', JSON.stringify(owned));
+  localStorage.setItem(
+    'ss_shards',
+    shards
+  );
 
-  document.getElementById('shards').textContent = shards;
+  localStorage.setItem(
+    'ss_owned_balls',
+    JSON.stringify(owned)
+  );
+
+  updateBalance();
 
   renderShop();
 }
 
 function useBall(id) {
-  if (!owned.includes(id)) return;
+
+  if (!owned.includes(id)) {
+    return;
+  }
 
   selectedBall = id;
 
-  localStorage.setItem('ss_selected_ball', selectedBall);
+  localStorage.setItem(
+    'ss_selected_ball',
+    selectedBall
+  );
 
   updateLaneBall();
 
@@ -171,49 +264,151 @@ function useBall(id) {
 }
 
 function renderMyBalls() {
-  const section = document.getElementById('balls');
+
+  const section =
+    document.getElementById('balls');
 
   section.innerHTML =
     '<button onclick="show(\'home\')">← HOME</button>' +
+
     '<h2>MY BALLS 🎳</h2>' +
-    '<p>Select the ball you want to bowl with.</p>' +
-    balls.filter(b => owned.includes(b.id)).map(b =>
-      '<div class="card">' +
-      '<img src="' + b.file + '" style="width:120px;height:120px;object-fit:contain">' +
-      '<h3>' + b.icon + ' ' + b.name + '</h3>' +
-      '<button onclick="useBall(\'' + b.id + '\')">' +
-      (selectedBall === b.id ? '✅ USING THIS BALL' : 'USE BALL') +
-      '</button>' +
-      '</div>'
-    ).join('');
+
+    '<p>Select your bowling ball.</p>' +
+
+    balls
+      .filter(ball => owned.includes(ball.id))
+      .map(ball =>
+
+        '<div class="card">' +
+
+        '<img src="' +
+        ball.file +
+        '" style="width:140px;height:140px;object-fit:contain">' +
+
+        '<h3>' +
+        ball.icon +
+        ' ' +
+        ball.name +
+        '</h3>' +
+
+        '<button onclick="useBall(\'' +
+        ball.id +
+        '\')">' +
+
+        (
+          selectedBall === ball.id
+            ? '✅ USING THIS BALL'
+            : 'USE BALL'
+        ) +
+
+        '</button>' +
+
+        '</div>'
+
+      ).join('');
 }
 
 function renderShop() {
-  const section = document.getElementById('shop');
+
+  const section =
+    document.getElementById('shop');
 
   section.innerHTML =
-    '<button onclick="show(\'home\')">← HOME</button>' +
-    '<h2>BALL SHOP 🛒</h2>' +
-    '<p>Use 🌱 Star Shards to unlock bowling balls.</p>' +
-    balls.map(b => {
 
-      const isOwned = owned.includes(b.id);
+    '<button onclick="show(\'home\')">' +
+    '← HOME' +
+    '</button>' +
 
-      return '<div class="card">' +
-        '<img src="' + b.file + '" style="width:140px;height:140px;object-fit:contain">' +
-        '<h3>' + b.icon + ' ' + b.name + '</h3>' +
-        '<p>' + (b.price === 0 ? 'FREE' : b.price.toLocaleString() + ' 🌱') + '</p>' +
+    '<h2>🎳 BALL SHOP</h2>' +
 
-        (isOwned
-          ? '<button disabled>✅ OWNED</button>'
-          : '<button onclick="buyBall(\'' + b.id + '\')">BUY / UNLOCK</button>'
+    '<h2>🌱 STAR SHARD BALLS</h2>' +
+
+    '<p>Earn 5 🌱 for every correct answer.</p>' +
+
+    balls.map(ball => {
+
+      const isOwned =
+        owned.includes(ball.id);
+
+      return (
+
+        '<div class="card">' +
+
+        '<img src="' +
+        ball.file +
+        '" style="width:150px;height:150px;object-fit:contain">' +
+
+        '<h3>' +
+        ball.icon +
+        ' ' +
+        ball.name +
+        '</h3>' +
+
+        '<p><b>' +
+
+        (
+          ball.price === 0
+            ? 'FREE'
+            : ball.price.toLocaleString() +
+              ' 🌱'
         ) +
 
-        '</div>';
+        '</b></p>' +
+
+        (
+          isOwned
+
+            ? '<button disabled>✅ OWNED</button>'
+
+            : '<button onclick="buyBall(\'' +
+              ball.id +
+              '\')">' +
+              'BUY / UNLOCK' +
+              '</button>'
+        ) +
+
+        '</div>'
+      );
 
     }).join('') +
 
-    '<p>🌱 Earn 5 Star Shards for every correct answer.</p>';
+    '<hr>' +
+
+    '<h2>💎 PREMIUM EXCLUSIVE BALLS</h2>' +
+
+    '<p><b>🔒 COMING SOON</b></p>' +
+
+    '<p>' +
+    'Premium balls will become available ' +
+    'after the launch period.' +
+    '</p>' +
+
+    premiumBalls.map(ball =>
+
+      '<div class="card premium">' +
+
+      '<h3>' +
+      ball.icon +
+      ' ' +
+      ball.name +
+      '</h3>' +
+
+      '<p><b>₹' +
+      ball.price +
+      '</b></p>' +
+
+      '<button disabled>' +
+      '🔒 COMING SOON' +
+      '</button>' +
+
+      '</div>'
+
+    ).join('') +
+
+    '<p>' +
+    'No real-money purchases are enabled ' +
+    'in the launch version.' +
+    '</p>';
 }
 
 show('home');
