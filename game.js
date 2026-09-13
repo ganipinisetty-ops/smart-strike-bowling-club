@@ -1,183 +1,601 @@
 let shards = +localStorage.getItem('ss_shards') || 0;
+
 let frame = 1;
 let earned = 0;
 
+
+/* =========================
+   NORMAL BALLS
+========================= */
+
 const balls = [
-  { id:'basic', name:'Basic Ball', price:0, file:'basic_ball-1.png', icon:'🎳' },
-  { id:'fire', name:'Fire Ball', price:1000, file:'fire_ball-1.png', icon:'🔥' },
-  { id:'lightning', name:'Lightning Ball', price:2500, file:'lightning_ball.png', icon:'⚡' },
-  { id:'diamond', name:'Diamond Ball', price:5000, file:'diamond_ball.png', icon:'💎' },
-  { id:'rainbow', name:'Rainbow Ball', price:10000, file:'rainbow_ball-1.png', icon:'🌈' },
-  { id:'golden', name:'Golden Ball', price:25000, file:'golden_ball.png', icon:'👑' }
+
+  {
+    id: 'basic',
+    name: 'Basic Ball',
+    price: 0,
+    file: 'basic_ball-1.png',
+    icon: '🎳'
+  },
+
+  {
+    id: 'fire',
+    name: 'Fire Ball',
+    price: 1000,
+    file: 'fire_ball-1.png',
+    icon: '🔥'
+  },
+
+  {
+    id: 'lightning',
+    name: 'Lightning Ball',
+    price: 2500,
+    file: 'lightning_ball.png',
+    icon: '⚡'
+  },
+
+  {
+    id: 'diamond',
+    name: 'Diamond Ball',
+    price: 5000,
+    file: 'diamond_ball.png',
+    icon: '💎'
+  },
+
+  {
+    id: 'rainbow',
+    name: 'Rainbow Ball',
+    price: 10000,
+    file: 'rainbow_ball-1.png',
+    icon: '🌈'
+  },
+
+  {
+    id: 'golden',
+    name: 'Golden Ball',
+    price: 25000,
+    file: 'golden_ball.png',
+    icon: '👑'
+  }
+
 ];
+
+
+/* =========================
+   NORMAL PINS
+========================= */
+
+const pins = [
+
+  {
+    id: 'classic',
+    name: 'Classic Pins',
+    price: 0,
+    file: 'classic_pins.png',
+    icon: '⚪'
+  },
+
+  {
+    id: 'fire',
+    name: 'Fire Pins',
+    price: 1500,
+    file: 'fire_pins.png',
+    icon: '🔥'
+  },
+
+  {
+    id: 'lightning',
+    name: 'Lightning Pins',
+    price: 3000,
+    file: 'lightning_pins.png',
+    icon: '⚡'
+  },
+
+  {
+    id: 'diamond',
+    name: 'Diamond Pins',
+    price: 10000,
+    file: 'diamond_pins.png',
+    icon: '💎'
+  },
+
+  {
+    id: 'golden',
+    name: 'Golden Pins',
+    price: 17000,
+    file: 'golden_pins.png',
+    icon: '👑'
+  }
+
+];
+
+
+/* =========================
+   PREMIUM BALLS
+========================= */
 
 const premiumBalls = [
-  { id:'galaxy', name:'Galaxy Ball', price:199, icon:'🌌' },
-  { id:'dragon', name:'Dragon Ball', price:299, icon:'🐉' },
-  { id:'frost', name:'Frost Ball', price:399, icon:'❄️' },
-  { id:'cyberstorm', name:'Cyber Storm Ball', price:499, icon:'⚡' },
-  { id:'phoenix', name:'Phoenix Ball', price:699, icon:'🔥' },
-  { id:'blackhole', name:'Black Hole Ball', price:999, icon:'🕳️' }
+
+  {
+    id: 'galaxy',
+    name: 'Galaxy Ball',
+    price: 199,
+    icon: '🌌'
+  },
+
+  {
+    id: 'dragon',
+    name: 'Dragon Ball',
+    price: 299,
+    icon: '🐉'
+  },
+
+  {
+    id: 'frost',
+    name: 'Frost Ball',
+    price: 399,
+    icon: '❄️'
+  },
+
+  {
+    id: 'cyberstorm',
+    name: 'Cyber Storm Ball',
+    price: 499,
+    icon: '⚡'
+  },
+
+  {
+    id: 'phoenix',
+    name: 'Phoenix Ball',
+    price: 699,
+    icon: '🔥'
+  },
+
+  {
+    id: 'blackhole',
+    name: 'Black Hole Ball',
+    price: 999,
+    icon: '🕳️'
+  }
+
 ];
 
-let owned = JSON.parse(
+
+/* =========================
+   PREMIUM PINS
+========================= */
+
+const premiumPins = [
+
+  {
+    id: 'galaxy',
+    name: 'Galaxy Pins',
+    price: 99,
+    icon: '🌌'
+  },
+
+  {
+    id: 'dragon',
+    name: 'Dragon Pins',
+    price: 149,
+    icon: '🐉'
+  },
+
+  {
+    id: 'frost',
+    name: 'Frost Pins',
+    price: 199,
+    icon: '❄️'
+  },
+
+  {
+    id: 'cyberstorm',
+    name: 'Cyber Storm Pins',
+    price: 249,
+    icon: '⚡'
+  },
+
+  {
+    id: 'phoenix',
+    name: 'Phoenix Pins',
+    price: 349,
+    icon: '🔥'
+  },
+
+  {
+    id: 'blackhole',
+    name: 'Black Hole Pins',
+    price: 499,
+    icon: '🕳️'
+  }
+
+];
+
+
+/* =========================
+   OWNED ITEMS
+========================= */
+
+let ownedBalls = JSON.parse(
   localStorage.getItem('ss_owned_balls') || '["basic"]'
 );
+
+let ownedPins = JSON.parse(
+  localStorage.getItem('ss_owned_pins') || '["classic"]'
+);
+
 
 let selectedBall =
   localStorage.getItem('ss_selected_ball') || 'basic';
 
+let selectedPins =
+  localStorage.getItem('ss_selected_pins') || 'classic';
+
+
+/* =========================
+   QUESTIONS
+========================= */
+
 const qs = [
+
   ['Maths','7 + 5 = ?',['10','12','14'],1],
-  ['Science','Which is the Red Planet?',['Mars','Venus','Jupiter'],0],
-  ['General Knowledge','How many days are in a week?',['5','7','9'],1],
-  ['Maths','9 × 3 = ?',['18','27','36'],1],
-  ['Science','Which gas do humans need to breathe?',['Oxygen','Helium','Neon'],0],
-  ['General Knowledge','Which is the largest ocean?',['Atlantic','Indian','Pacific'],2],
-  ['Maths','50 ÷ 5 = ?',['5','10','15'],1],
-  ['Science','At what temperature does water freeze?',['0°C','10°C','100°C'],0],
-  ['General Knowledge','How many continents are there?',['5','6','7'],2],
-  ['Maths','100 - 37 = ?',['53','63','73'],1]
+
+  ['Science','Which is the Red Planet?',
+   ['Mars','Venus','Jupiter'],0],
+
+  ['General Knowledge','How many days are in a week?',
+   ['5','7','9'],1],
+
+  ['Maths','9 × 3 = ?',
+   ['18','27','36'],1],
+
+  ['Science','Which gas do humans need to breathe?',
+   ['Oxygen','Helium','Neon'],0],
+
+  ['General Knowledge','Which is the largest ocean?',
+   ['Atlantic','Indian','Pacific'],2],
+
+  ['Maths','50 ÷ 5 = ?',
+   ['5','10','15'],1],
+
+  ['Science','At what temperature does water freeze?',
+   ['0°C','10°C','100°C'],0],
+
+  ['General Knowledge','How many continents are there?',
+   ['5','6','7'],2],
+
+  ['Maths','100 - 37 = ?',
+   ['53','63','73'],1]
+
 ];
 
+
+/* =========================
+   BALANCE
+========================= */
+
 function updateBalance() {
-  const el = document.getElementById('shards');
-  if (el) el.textContent = shards;
+
+  const el =
+    document.getElementById('shards');
+
+  if (el) {
+    el.textContent =
+      shards.toLocaleString();
+  }
+
 }
 
-function show(id) {
-  document.querySelectorAll('section').forEach(section => {
-    section.classList.add('hide');
-  });
 
-  const target = document.getElementById(id);
+/* =========================
+   SCREEN NAVIGATION
+========================= */
+
+function show(id) {
+
+  document
+    .querySelectorAll('section')
+    .forEach(section => {
+
+      section.classList.add('hide');
+
+    });
+
+
+  const target =
+    document.getElementById(id);
+
 
   if (target) {
+
     target.classList.remove('hide');
+
   }
+
 
   updateBalance();
 
+
   if (id === 'balls') {
+
     renderMyBalls();
+
   }
+
 
   if (id === 'shop') {
+
     renderShop();
+
   }
 
-  updateLaneBall();
+
+  updateLaneItems();
+
 }
 
+
+/* =========================
+   START GAME
+========================= */
+
 function start() {
+
   frame = 1;
+
   earned = 0;
+
 
   show('game');
 
-  document.getElementById('frame').textContent = '1';
-  document.getElementById('q').innerHTML = '';
-  document.getElementById('bowl').disabled = false;
 
-  updateLaneBall();
+  document.getElementById('frame')
+    .textContent = '1';
+
+
+  document.getElementById('q')
+    .innerHTML = '';
+
+
+  document.getElementById('bowl')
+    .disabled = false;
+
+
+  updateLaneItems();
+
 }
 
-function updateLaneBall() {
-  const ball = document.getElementById('ball');
 
-  if (!ball) return;
+/* =========================
+   UPDATE LANE BALL + PINS
+========================= */
 
-  const b = balls.find(x => x.id === selectedBall);
+function updateLaneItems() {
 
-  if (!b) return;
+  const ball =
+    document.getElementById('ball');
 
-  ball.innerHTML =
-    '<img src="' + b.file + '" alt="' + b.name + '">';
+
+  const pinArea =
+    document.getElementById('pins');
+
+
+  const b =
+    balls.find(x => x.id === selectedBall);
+
+
+  const p =
+    pins.find(x => x.id === selectedPins);
+
+
+  if (ball && b) {
+
+    ball.innerHTML =
+      '<img src="' +
+      b.file +
+      '" alt="' +
+      b.name +
+      '" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'🎳\';">';
+
+  }
+
+
+  if (pinArea && p) {
+
+    pinArea.innerHTML =
+      '<div class="pin-design ' +
+      p.id +
+      '">' +
+
+      '<span>⚪</span> ' +
+      '<span>⚪</span> ' +
+      '<span>⚪</span> ' +
+      '<span>⚪</span> ' +
+      '<span>⚪</span>' +
+
+      '<br>' +
+
+      '<span>⚪</span> ' +
+      '<span>⚪</span> ' +
+      '<span>⚪</span> ' +
+      '<span>⚪</span> ' +
+      '<span>⚪</span>' +
+
+      '</div>';
+
+  }
+
 }
+
+
+/* =========================
+   BOWL
+========================= */
 
 function bowl() {
-  const bowlButton = document.getElementById('bowl');
 
-  if (bowlButton.disabled) return;
+  const bowlButton =
+    document.getElementById('bowl');
+
+
+  if (bowlButton.disabled) {
+    return;
+  }
+
 
   bowlButton.disabled = true;
 
-  const ball = document.getElementById('ball');
-  const pins = document.getElementById('pins');
 
-  ball.classList.add('roll');
+  const ball =
+    document.getElementById('ball');
+
+
+  const pinArea =
+    document.getElementById('pins');
+
+
+  if (ball) {
+
+    ball.classList.add('roll');
+
+  }
+
 
   setTimeout(() => {
 
-    ball.classList.remove('roll');
+    if (ball) {
 
-    pins.style.transform =
-      'scale(0.85) rotate(2deg)';
+      ball.classList.remove('roll');
+
+    }
+
+
+    if (pinArea) {
+
+      pinArea.style.transform =
+        'scale(0.85) rotate(2deg)';
+
+    }
+
 
     setTimeout(() => {
 
-      pins.style.transform = '';
+      if (pinArea) {
+
+        pinArea.style.transform = '';
+
+      }
+
 
       question();
 
     }, 250);
 
   }, 900);
+
 }
+
+
+/* =========================
+   QUESTION
+========================= */
 
 function question() {
-  const q = qs[frame - 1];
+
+  const q =
+    qs[frame - 1];
+
 
   document.getElementById('q').innerHTML =
-    '<b>' + q[0] + ' 🧠</b>' +
-    '<p>' + q[1] + '</p>' +
 
-    q[2].map((answerText, index) =>
-      '<button class="answer" onclick="answer(' +
-      index + ',' + q[3] + ')">' +
-      answerText +
-      '</button>'
-    ).join('');
+    '<b>' +
+    q[0] +
+    ' 🧠</b>' +
+
+    '<p>' +
+    q[1] +
+    '</p>' +
+
+    q[2]
+      .map((answerText, index) =>
+
+        '<button class="answer" onclick="answer(' +
+        index +
+        ',' +
+        q[3] +
+        ')">' +
+
+        answerText +
+
+        '</button>'
+
+      )
+      .join('');
+
 }
+
+
+/* =========================
+   ANSWER
+========================= */
 
 function answer(index, correctIndex) {
 
   const buttons =
     document.querySelectorAll('.answer');
 
+
   buttons.forEach(button => {
+
     button.disabled = true;
+
   });
+
 
   if (index === correctIndex) {
 
-    buttons[index].classList.add('correct');
+    buttons[index]
+      .classList.add('correct');
+
 
     shards += 5;
+
     earned += 5;
+
 
     localStorage.setItem(
       'ss_shards',
       shards
     );
 
+
     updateBalance();
 
-  } else {
-
-    buttons[index].classList.add('wrong');
-
-    buttons[correctIndex].classList.add('correct');
   }
+
+  else {
+
+    buttons[index]
+      .classList.add('wrong');
+
+
+    buttons[correctIndex]
+      .classList.add('correct');
+
+  }
+
 
   setTimeout(() => {
 
     frame++;
 
+
     if (frame > 10) {
 
       document.getElementById('q').innerHTML =
+
         '<h2>🏆 GAME COMPLETE!</h2>' +
+
         '<p>You earned <b>' +
         earned +
         ' 🌱 Star Shards</b>.</p>' +
@@ -190,30 +608,47 @@ function answer(index, correctIndex) {
         'HOME 🏠' +
         '</button>';
 
-    } else {
+    }
 
-      document.getElementById('frame').textContent =
-        frame;
+    else {
 
-      document.getElementById('q').innerHTML = '';
+      document.getElementById('frame')
+        .textContent = frame;
 
-      document.getElementById('bowl').disabled = false;
+
+      document.getElementById('q')
+        .innerHTML = '';
+
+
+      document.getElementById('bowl')
+        .disabled = false;
+
     }
 
   }, 900);
+
 }
+
+
+/* =========================
+   BUY BALL
+========================= */
 
 function buyBall(id) {
 
-  const ball = balls.find(
-    item => item.id === id
-  );
+  const ball =
+    balls.find(item => item.id === id);
 
-  if (!ball) return;
 
-  if (owned.includes(id)) {
+  if (!ball) {
     return;
   }
+
+
+  if (ownedBalls.includes(id)) {
+    return;
+  }
+
 
   if (shards < ball.price) {
 
@@ -224,66 +659,177 @@ function buyBall(id) {
     );
 
     return;
+
   }
+
 
   shards -= ball.price;
 
-  owned.push(id);
+  ownedBalls.push(id);
+
 
   localStorage.setItem(
     'ss_shards',
     shards
   );
 
+
   localStorage.setItem(
     'ss_owned_balls',
-    JSON.stringify(owned)
+    JSON.stringify(ownedBalls)
   );
+
 
   updateBalance();
 
   renderShop();
+
 }
 
-function useBall(id) {
 
-  if (!owned.includes(id)) {
+/* =========================
+   BUY PINS
+========================= */
+
+function buyPins(id) {
+
+  const pin =
+    pins.find(item => item.id === id);
+
+
+  if (!pin) {
     return;
   }
 
+
+  if (ownedPins.includes(id)) {
+    return;
+  }
+
+
+  if (shards < pin.price) {
+
+    alert(
+      'You need ' +
+      pin.price.toLocaleString() +
+      ' 🌱 Star Shards.'
+    );
+
+    return;
+
+  }
+
+
+  shards -= pin.price;
+
+  ownedPins.push(id);
+
+
+  localStorage.setItem(
+    'ss_shards',
+    shards
+  );
+
+
+  localStorage.setItem(
+    'ss_owned_pins',
+    JSON.stringify(ownedPins)
+  );
+
+
+  updateBalance();
+
+  renderShop();
+
+}
+
+
+/* =========================
+   USE BALL
+========================= */
+
+function useBall(id) {
+
+  if (!ownedBalls.includes(id)) {
+    return;
+  }
+
+
   selectedBall = id;
+
 
   localStorage.setItem(
     'ss_selected_ball',
     selectedBall
   );
 
-  updateLaneBall();
+
+  updateLaneItems();
 
   renderMyBalls();
+
 }
+
+
+/* =========================
+   USE PINS
+========================= */
+
+function usePins(id) {
+
+  if (!ownedPins.includes(id)) {
+    return;
+  }
+
+
+  selectedPins = id;
+
+
+  localStorage.setItem(
+    'ss_selected_pins',
+    selectedPins
+  );
+
+
+  updateLaneItems();
+
+  renderMyPins();
+
+}
+
+
+/* =========================
+   MY BALLS
+========================= */
 
 function renderMyBalls() {
 
   const section =
     document.getElementById('balls');
 
+
   section.innerHTML =
-    '<button onclick="show(\'home\')">← HOME</button>' +
+
+    '<button onclick="show(\'home\')">' +
+    '← HOME</button>' +
 
     '<h2>MY BALLS 🎳</h2>' +
 
     '<p>Select your bowling ball.</p>' +
 
     balls
-      .filter(ball => owned.includes(ball.id))
+      .filter(ball =>
+        ownedBalls.includes(ball.id)
+      )
       .map(ball =>
 
         '<div class="card">' +
 
         '<img src="' +
         ball.file +
-        '" style="width:140px;height:140px;object-fit:contain">' +
+        '" alt="' +
+        ball.name +
+        '" style="width:140px;height:140px;object-fit:contain" onerror="this.style.display=\'none\'">' +
 
         '<h3>' +
         ball.icon +
@@ -305,38 +851,115 @@ function renderMyBalls() {
 
         '</div>'
 
-      ).join('');
+      )
+      .join('');
+
 }
+
+
+/* =========================
+   MY PINS
+========================= */
+
+function renderMyPins() {
+
+  const section =
+    document.getElementById('balls');
+
+
+  section.innerHTML =
+
+    '<button onclick="show(\'home\')">' +
+    '← HOME</button>' +
+
+    '<h2>MY PINS ⚪</h2>' +
+
+    '<p>Select your bowling pins.</p>' +
+
+    ownedPins
+      .map(id =>
+        pins.find(pin => pin.id === id)
+      )
+      .filter(Boolean)
+      .map(pin =>
+
+        '<div class="card">' +
+
+        '<img src="' +
+        pin.file +
+        '" alt="' +
+        pin.name +
+        '" style="width:180px;height:180px;object-fit:contain" onerror="this.style.display=\'none\'">' +
+
+        '<h3>' +
+        pin.icon +
+        ' ' +
+        pin.name +
+        '</h3>' +
+
+        '<button onclick="usePins(\'' +
+        pin.id +
+        '\')">' +
+
+        (
+          selectedPins === pin.id
+            ? '✅ USING THESE PINS'
+            : 'USE PINS'
+        ) +
+
+        '</button>' +
+
+        '</div>'
+
+      )
+      .join('');
+
+}
+
+
+/* =========================
+   STORE
+========================= */
 
 function renderShop() {
 
   const section =
     document.getElementById('shop');
 
+
   section.innerHTML =
 
     '<button onclick="show(\'home\')">' +
-    '← HOME' +
-    '</button>' +
+    '← HOME</button>' +
 
-    '<h2>🎳 BALL SHOP</h2>' +
+    '<h1>🛒 STORE</h1>' +
 
-    '<h2>🌱 STAR SHARD BALLS</h2>' +
+    '<p>Unlock awesome bowling balls and pins!</p>' +
 
-    '<p>Earn 5 🌱 for every correct answer.</p>' +
+
+    /* NORMAL BALLS */
+
+    '<div class="shop-section">' +
+
+    '<h2>🎳 STAR SHARD BALLS</h2>' +
+
+    '<p>🌱 Use Star Shards to unlock!</p>' +
 
     balls.map(ball => {
 
       const isOwned =
-        owned.includes(ball.id);
+        ownedBalls.includes(ball.id);
+
 
       return (
 
-        '<div class="card">' +
+        '<div class="card shop-card">' +
 
         '<img src="' +
         ball.file +
-        '" style="width:150px;height:150px;object-fit:contain">' +
+        '" alt="' +
+        ball.name +
+        '" style="width:150px;height:150px;object-fit:contain" onerror="this.style.display=\'none\'">' +
 
         '<h3>' +
         ball.icon +
@@ -368,24 +991,90 @@ function renderShop() {
         ) +
 
         '</div>'
+
       );
 
     }).join('') +
 
-    '<hr>' +
+    '</div>' +
+
+
+    /* NORMAL PINS */
+
+    '<div class="shop-section">' +
+
+    '<h2>⚪ STAR SHARD PINS</h2>' +
+
+    '<p>🌱 Use Star Shards to unlock!</p>' +
+
+    pins.map(pin => {
+
+      const isOwned =
+        ownedPins.includes(pin.id);
+
+
+      return (
+
+        '<div class="card shop-card">' +
+
+        '<img src="' +
+        pin.file +
+        '" alt="' +
+        pin.name +
+        '" style="width:180px;height:180px;object-fit:contain" onerror="this.style.display=\'none\'">' +
+
+        '<h3>' +
+        pin.icon +
+        ' ' +
+        pin.name +
+        '</h3>' +
+
+        '<p><b>' +
+
+        (
+          pin.price === 0
+            ? 'FREE'
+            : pin.price.toLocaleString() +
+              ' 🌱'
+        ) +
+
+        '</b></p>' +
+
+        (
+          isOwned
+
+            ? '<button disabled>✅ OWNED</button>'
+
+            : '<button onclick="buyPins(\'' +
+              pin.id +
+              '\')">' +
+              'BUY / UNLOCK' +
+              '</button>'
+        ) +
+
+        '</div>'
+
+      );
+
+    }).join('') +
+
+    '</div>' +
+
+
+    /* PREMIUM BALLS */
+
+    '<div class="premium-section">' +
 
     '<h2>💎 PREMIUM EXCLUSIVE BALLS</h2>' +
 
     '<p><b>🔒 COMING SOON</b></p>' +
 
-    '<p>' +
-    'Premium balls will become available ' +
-    'after the launch period.' +
-    '</p>' +
+    '<p>Available after launch.</p>' +
+
 
     premiumBalls.map(ball =>
 
-      '<div class="card premium">' +
+      '<div class="card premium-card">' +
 
       '<h3>' +
       ball.icon +
@@ -405,10 +1094,58 @@ function renderShop() {
 
     ).join('') +
 
-    '<p>' +
-    'No real-money purchases are enabled ' +
-    'in the launch version.' +
-    '</p>';
+    '</div>' +
+
+
+    /* PREMIUM PINS */
+
+    '<div class="premium-section">' +
+
+    '<h2>💎 PREMIUM EXCLUSIVE PINS</h2>' +
+
+    '<p><b>🔒 COMING SOON</b></p>' +
+
+    '<p>Available after launch.</p>' +
+
+
+    premiumPins.map(pin =>
+
+      '<div class="card premium-card">' +
+
+      '<h3>' +
+      pin.icon +
+      ' ' +
+      pin.name +
+      '</h3>' +
+
+      '<p><b>₹' +
+      pin.price +
+      '</b></p>' +
+
+      '<button disabled>' +
+      '🔒 COMING SOON' +
+      '</button>' +
+
+      '</div>'
+
+    ).join('') +
+
+    '</div>' +
+
+
+    '<p><b>Scroll down to explore all premium exclusives.</b></p>' +
+
+    '<p>No real-money purchases are enabled in the launch version.</p>';
+
 }
+
+
+/* =========================
+   INITIAL LOAD
+========================= */
+
+updateBalance();
+
+updateLaneItems();
 
 show('home');
