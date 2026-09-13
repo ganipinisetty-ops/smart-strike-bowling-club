@@ -1,9 +1,12 @@
 <!doctype html>
 <html>
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Smart Strike Bowling Club</title>
+
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -12,9 +15,20 @@
 <div class="app">
 
 <header>
-<img src="assets/logo.png" alt="Smart Strike Bowling Club">
-<b>🌱 <span id="shards">0</span></b>
+
+<img
+src="assets/logo.png"
+alt="Smart Strike Bowling Club"
+>
+
+<b>
+🌱 <span id="shards">0</span>
+</b>
+
 </header>
+
+
+<!-- ================= HOME ================= -->
 
 <section id="home">
 
@@ -22,43 +36,66 @@
 
 <p>Play • Learn • Grow</p>
 
+
 <button onclick="start()">
 🎳 PLAY GAME
 </button>
+
 
 <button onclick="show('learn')">
 🧠 LEARN & EARN
 </button>
 
+
 <button onclick="show('balls')">
 🎳 MY BALLS
 </button>
 
+
 <button onclick="show('shop')">
-🛒 BALL SHOP
+🛒 STORE
 </button>
 
 </section>
 
 
+
+<!-- ================= GAME ================= -->
+
 <section id="game" class="hide">
 
-<b>
+<button onclick="show('home')">
+← HOME
+</button>
+
+
+<h2>
 FRAME <span id="frame">1</span>/10
-</b>
+</h2>
+
 
 <div class="lane">
 
 <div id="pins">
-● ● ● ● ●<br>
- ● ● ● ● ●
+
+● ● ● ● ●
+<br>
+● ● ● ● ●
+
 </div>
+
 
 <div id="ball">
-<img src="basic_ball-1.png" alt="Bowling Ball">
+
+<img
+src="basic_ball-1.png"
+alt="Bowling Ball"
+>
+
 </div>
 
 </div>
+
 
 <input
 id="aim"
@@ -68,14 +105,24 @@ max="100"
 value="0"
 >
 
-<button id="bowl" onclick="bowl()">
+
+<button
+id="bowl"
+onclick="bowl()"
+>
+
 BOWL 🎳
+
 </button>
+
 
 <div id="q"></div>
 
 </section>
 
+
+
+<!-- ================= LEARN ================= -->
 
 <section id="learn" class="hide">
 
@@ -83,15 +130,19 @@ BOWL 🎳
 ← HOME
 </button>
 
+
 <h2>🧠 LEARN & EARN</h2>
+
 
 <p>
 Maths ➗ • Science 🔬 • General Knowledge 🌍
 </p>
 
+
 <p>
 10 questions per game.
 </p>
+
 
 <p>
 Every correct answer earns
@@ -101,18 +152,26 @@ Every correct answer earns
 </section>
 
 
+
+<!-- ================= MY ITEMS ================= -->
+
 <section id="balls" class="hide">
 
 <button onclick="show('home')">
 ← HOME
 </button>
 
-<h2>🎳 MY BALLS</h2>
+
+<h2>🎳 MY ITEMS</h2>
+
 
 <div id="myBalls"></div>
 
 </section>
 
+
+
+<!-- ================= STORE ================= -->
 
 <section id="shop" class="hide">
 
@@ -120,15 +179,29 @@ Every correct answer earns
 ← HOME
 </button>
 
-<h2>🛒 BALL SHOP</h2>
 
-<div id="shopBalls"></div>
+<h1>🛒 STORE</h1>
+
+
+<p>
+Unlock awesome bowling balls and pins!
+</p>
+
+
+<div id="store-content">
+
+<!-- game.js creates the complete store here -->
+
+</div>
+
 
 </section>
 
 </div>
 
+
 <script src="game.js"></script>
 
 </body>
+
 </html>
